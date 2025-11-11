@@ -48,6 +48,14 @@ export class CompleteRoutineService {
             },
         });
 
+        await prisma.activity.create({
+            data: {
+                userId,
+                routineId: routine.id,
+                action: "COMPLETED_ROUTINE",
+                description: `${user.name} completou "${routine.title}" (${routine.difficulty}) e ganhou ${routine.xpReward} XP!`,
+            },
+        });
         return {
             message: `Rotina concluída! ${newLevel > user.level ? "Level Up! 🔥" : ""}`,
             user: updatedUser,

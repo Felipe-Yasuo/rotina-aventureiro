@@ -8,19 +8,22 @@ datasource db {
 }
 
 model User {
-  id         String       @id @default(uuid())
-  name       String
-  email      String       @unique
-  password   String
-  xp         Int          @default(0)
-  money      Int          @default(0)
-  level      Int          @default(1)
-  routines   Routine[]
-  followers  Friendship[] @relation("following")
-  following  Friendship[] @relation("follower")
-  activities Activity[]
-  createdAt  DateTime     @default(now())
-  userItems  UserItem[]
+  id           String       @id @default(uuid())
+  name         String
+  email        String       @unique
+  password     String
+  xp           Int          @default(0)
+  money        Int          @default(0)
+  level        Int          @default(1)
+  routines     Routine[]
+  followers    Friendship[] @relation("following")
+  following    Friendship[] @relation("follower")
+  activities   Activity[]
+  streak       Int          @default(0)
+  lastStreakAt DateTime?
+  lives        Int          @default(5)
+  createdAt    DateTime     @default(now())
+  userItems    UserItem[]
 }
 
 model Routine {

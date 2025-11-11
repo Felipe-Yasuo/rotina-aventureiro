@@ -1,4 +1,5 @@
 import { prisma } from "../../prisma";
+import { UpdateDailyStreakService } from "../user/UpdateDailyStreakService";
 
 interface CompleteRequest {
     routineId: string;
@@ -20,7 +21,6 @@ export class CompleteRoutineService {
             data: { completed: true },
         });
 
-
         const user = await prisma.user.findUnique({ where: { id: userId } });
         if (!user) throw new Error("Usuário não encontrado.");
 
@@ -28,7 +28,6 @@ export class CompleteRoutineService {
         let newXp = user.xp + routine.xpReward;
         let newMoney = user.money + routine.moneyReward;
         let newLevel = user.level;
-
 
         let xpNeeded = newLevel * 100;
 
@@ -56,6 +55,11 @@ export class CompleteRoutineService {
                 description: `${user.name} completou "${routine.title}" (${routine.difficulty}) e ganhou ${routine.xpReward} XP!`,
             },
         });
+
+
+        const streakService = new UpdateDailyStreakService();
+        await streakService.execute(userId);
+
         return {
             message: `Rotina concluída! ${newLevel > user.level ? "Level Up! 🔥" : ""}`,
             user: updatedUser,

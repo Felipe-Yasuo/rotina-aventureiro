@@ -4,6 +4,7 @@ import { AuthUserController } from "./controllers/user/AuthUserController";
 import { isAuthenticated } from "./middlewares/isAuthenticated";
 import { CreateRoutineController } from "./controllers/routine/CreateRoutineController";
 import { ListUserRoutinesController } from "./controllers/routine/ListUserRoutinesController";
+import { GetRoutineStatsController } from "./controllers/routine/GetRoutineStatsController";
 import { CompleteRoutineController } from "./controllers/routine/CompleteRoutineController";
 import { GetRankingController } from "./controllers/user/GetRankingController";
 import { FollowUserController } from "./controllers/friendship/FollowUserController";
@@ -18,6 +19,7 @@ const getRanking = new GetRankingController();
 const createUser = new CreateUserController();
 const authUser = new AuthUserController();
 const listUserRoutines = new ListUserRoutinesController();
+const getRoutineStats = new GetRoutineStatsController();
 const createRoutine = new CreateRoutineController();
 const completeRoutine = new CompleteRoutineController();
 const followUser = new FollowUserController();
@@ -34,6 +36,8 @@ router.post("/session", (req, res) => authUser.handle(req, res));
 router.post("/routines", isAuthenticated, (req, res) => createRoutine.handle(req, res));
 router.put("/routines/complete", isAuthenticated, (req, res) => completeRoutine.handle(req, res));
 router.get("/routines", isAuthenticated, (req, res) => listUserRoutines.handle(req, res));
+router.get("/routines/stats", isAuthenticated, (req, res) => getRoutineStats.handle(req, res));
+
 
 // ======= SOCIAL =======
 router.post("/friends/follow", isAuthenticated, (req, res) => followUser.handle(req, res));

@@ -1,0 +1,40 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String    @id @default(uuid())
+  name      String
+  email     String    @unique
+  password  String
+  xp        Int       @default(0)
+  money     Int       @default(0)
+  level     Int       @default(1)
+  routines  Routine[]
+  createdAt DateTime  @default(now())
+}
+
+model Routine {
+  id          String     @id @default(uuid())
+  title       String
+  description String?
+  difficulty  Difficulty
+  imageUrl    String
+  xpReward    Int
+  moneyReward Int
+  completed   Boolean    @default(false)
+  user        User       @relation(fields: [userId], references: [id])
+  userId      String
+  createdAt   DateTime   @default(now())
+}
+
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
+}

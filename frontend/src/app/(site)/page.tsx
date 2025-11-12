@@ -1,18 +1,17 @@
-"use client";
-import { useEffect } from "react";
-import { api } from "@/services/api";
+import { Button } from "@/components/ui/Button";
 
-export default function Home() {
-    useEffect(() => {
-        api.get("/ping").then((res) => console.log(res.data));
-    }, []);
-
+export default function HomePage() {
     return (
-        <main className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-gray-100">
-            <h1 className="text-5xl font-bold text-green-400 mb-3">
+        <main className="min-h-screen flex flex-col items-center justify-center text-center px-6 bg-gradient-to-b from-gray-900 via-gray-950 to-black">
+            <h1 className="text-5xl md:text-6xl font-extrabold text-green-400 drop-shadow-lg mb-4">
                 Rotina do Aventureiro
             </h1>
-            <p className="text-gray-300">Frontend conectado ao backend!</p>
+            <p className="text-gray-300 text-lg md:text-xl max-w-2xl mb-8">
+                Transforme suas tarefas diárias em uma jornada épica.
+                Suba de nível, ganhe recompensas e conquiste seus objetivos!
+            </p>
+
+            <Button className="text-lg px-8 py-4">Comece Agora</Button>
         </main>
     );
 }

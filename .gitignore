@@ -64,6 +64,8 @@ yarn-error.log*
 # ===============================
 frontend/.next/
 frontend/out/
+frontend/node_modules/
+backend/node_modules/
 
 # ===============================
 # 🧪 TESTES
@@ -74,5 +76,9 @@ coverage/
 jest-cache/
 jest-test-results.json
 
-# Forçar inclusão da pasta frontend
+# ===============================
+# ✅ EXCEÇÕES
+# ===============================
+# Forçar inclusão da pasta frontend, mas continuar ignorando node_modules
 !frontend/
+!backend/

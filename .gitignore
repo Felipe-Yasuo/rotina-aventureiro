@@ -73,3 +73,6 @@ coverage/
 *.test.ts
 jest-cache/
 jest-test-results.json
+
+# Forçar inclusão da pasta frontend
+!frontend/

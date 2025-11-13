@@ -29,11 +29,20 @@ app.use(
     (err: Error, req: Request, res: Response, next: NextFunction) => {
         console.error("🔥 Erro capturado:", err);
 
-
         if (err instanceof AppError) {
             return res.status(err.statusCode).json({
                 status: "error",
                 message: err.message,
+                details: (err as any).details ?? null,
+            });
+        }
+
+
+        if ((err as any).issues) {
+            return res.status(400).json({
+                status: "error",
+                message: "Erro de validação nos dados.",
+                details: (err as any).issues,
             });
         }
 

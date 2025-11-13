@@ -10,6 +10,10 @@ export class CompleteRoutineService {
     async execute({ routineId, userId }: CompleteRequest) {
         const routine = await prisma.routine.findFirst({
             where: { id: routineId, userId },
+            include: {
+                attributes: true,
+                user: true
+            }
         });
 
         if (!routine) throw new Error("Rotina não encontrada.");
@@ -46,6 +50,57 @@ export class CompleteRoutineService {
                 level: newLevel,
             },
         });
+
+        // busca atributos da rotina
+        const attrs = await prisma.routineAttribute.findMany({
+            where: { routineId },
+        });
+
+        if (attrs.length > 0) {
+            const incrementValue =
+                routine.difficulty === "EASY" ? 1 :
+                    routine.difficulty === "MEDIUM" ? 2 :
+                        3;
+
+            const attrUpdates: any = {};
+
+            for (const a of attrs) {
+                switch (a.type) {
+                    case "STRENGTH":
+                        attrUpdates.strength = { increment: incrementValue };
+                        break;
+                    case "INTELLIGENCE":
+                        attrUpdates.intelligence = { increment: incrementValue };
+                        break;
+                    case "CHARISMA":
+                        attrUpdates.charisma = { increment: incrementValue };
+                        break;
+                    case "CREATIVITY":
+                        attrUpdates.creativity = { increment: incrementValue };
+                        break;
+                    case "HEALTH":
+                        attrUpdates.health = { increment: incrementValue };
+                        break;
+                }
+            }
+
+            await prisma.user.update({
+                where: { id: userId },
+                data: attrUpdates,
+            });
+
+            // cria atividade no feed
+            await prisma.activity.create({
+                data: {
+                    userId,
+                    routineId,
+                    action: "ATTRIBUTE_GAIN",
+                    description: `${user.name} aumentou seus atributos em +${incrementValue}! 💪`,
+                },
+            });
+        }
+
+
 
         await prisma.activity.create({
             data: {

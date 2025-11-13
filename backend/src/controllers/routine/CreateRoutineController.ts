@@ -3,8 +3,8 @@ import { CreateRoutineService } from "../../services/routine/CreateRoutineServic
 
 export class CreateRoutineController {
     async handle(req: Request, res: Response) {
-        const { title, description, difficulty, imageUrl } = req.body;
-        const userId = req.user.id; // vem do middleware JWT
+        const { title, description, difficulty, imageUrl, attributes, } = req.body;
+        const userId = req.user.id;
 
         const service = new CreateRoutineService();
         const routine = await service.execute({
@@ -13,6 +13,7 @@ export class CreateRoutineController {
             difficulty,
             imageUrl,
             userId,
+            attributes,
         });
 
         return res.status(201).json(routine);

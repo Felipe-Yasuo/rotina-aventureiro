@@ -22,22 +22,45 @@ model User {
   streak       Int          @default(0)
   lastStreakAt DateTime?
   lives        Int          @default(5)
-  createdAt    DateTime     @default(now())
-  userItems    UserItem[]
+
+  strength     Int @default(0)
+  intelligence Int @default(0)
+  charisma     Int @default(0)
+  creativity   Int @default(0)
+  health       Int @default(0)
+
+  createdAt DateTime   @default(now())
+  userItems UserItem[]
 }
 
 model Routine {
-  id          String     @id @default(uuid())
+  id          String             @id @default(uuid())
   title       String
   description String?
   difficulty  Difficulty
   imageUrl    String
   xpReward    Int
   moneyReward Int
-  completed   Boolean    @default(false)
-  user        User       @relation(fields: [userId], references: [id])
+  completed   Boolean            @default(false)
+  user        User               @relation(fields: [userId], references: [id])
   userId      String
-  createdAt   DateTime   @default(now())
+  attributes  RoutineAttribute[]
+  createdAt   DateTime           @default(now())
+}
+
+model RoutineAttribute {
+  id        String        @id @default(uuid())
+  routine   Routine       @relation(fields: [routineId], references: [id])
+  routineId String
+  type      AttributeType
+}
+
+enum AttributeType {
+  STRENGTH
+  INTELLIGENCE
+  CHARISMA
+  CREATIVITY
+  HEALTH
 }
 
 model Friendship {

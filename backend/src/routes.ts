@@ -12,6 +12,8 @@ import { GetFriendsFeedController } from "./controllers/friendship/GetFriendsFee
 import { ListItemsController } from "./controllers/item/ListItemsController";
 import { BuyItemController } from "./controllers/item/BuyItemController";
 import { ListInventoryController } from "./controllers/item/ListInventoryController";
+import { GetMeController } from "./controllers/user/GetMeController";
+
 
 const router = Router();
 
@@ -27,10 +29,14 @@ const getFriendsFeed = new GetFriendsFeedController();
 const listItems = new ListItemsController();
 const buyItem = new BuyItemController();
 const listInventory = new ListInventoryController();
+const getMe = new GetMeController();
+
 
 // ======= AUTH =======
 router.post("/users", (req, res) => createUser.handle(req, res));
 router.post("/session", (req, res) => authUser.handle(req, res));
+router.get("/me", isAuthenticated, (req, res) => getMe.handle(req, res));
+
 
 // ======= ROUTINES =======
 router.post("/routines", isAuthenticated, (req, res) => createRoutine.handle(req, res));

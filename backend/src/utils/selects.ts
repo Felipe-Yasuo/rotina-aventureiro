@@ -1,0 +1,16 @@
+export const userSafeSelect = {
+    id: true,
+    name: true,
+    email: true,
+    xp: true,
+    money: true,
+    level: true,
+    streak: true,
+    lives: true,
+    strength: true,
+    intelligence: true,
+    charisma: true,
+    creativity: true,
+    health: true,
+    createdAt: true,
+};

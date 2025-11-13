@@ -4,6 +4,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { AppError } from "../../errors/AppError";
 import { loginSchema } from "../../validations/userSchemas";
+import { userSafeSelect } from "../../utils/selects";
 
 export class AuthUserController {
     async handle(req: Request, res: Response) {
@@ -29,22 +30,10 @@ export class AuthUserController {
 
         return res.json({
             token,
-            user: {
-                id: user.id,
-                name: user.name,
-                email: user.email,
-                xp: user.xp,
-                money: user.money,
-                level: user.level,
-                streak: user.streak,
-                lives: user.lives,
-                strength: user.strength,
-                intelligence: user.intelligence,
-                charisma: user.charisma,
-                creativity: user.creativity,
-                health: user.health,
-                createdAt: user.createdAt,
-            },
+            user: await prisma.user.findUnique({
+                where: { id: user.id },
+                select: userSafeSelect
+            })
         });
     }
 }

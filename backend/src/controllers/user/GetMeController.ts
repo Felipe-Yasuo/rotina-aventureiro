@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { prisma } from "../../prisma";
 import { AppError } from "../../errors/AppError";
+import { userSafeSelect } from "../../utils/selects";
 
 export class GetMeController {
     async handle(req: Request, res: Response) {
@@ -8,22 +9,7 @@ export class GetMeController {
 
         const user = await prisma.user.findUnique({
             where: { id: userId },
-            select: {
-                id: true,
-                name: true,
-                email: true,
-                xp: true,
-                money: true,
-                level: true,
-                streak: true,
-                lives: true,
-                strength: true,
-                intelligence: true,
-                charisma: true,
-                creativity: true,
-                health: true,
-                createdAt: true,
-            }
+            select: userSafeSelect,
         });
 
         if (!user) throw new AppError("Usuário não encontrado.", 404);

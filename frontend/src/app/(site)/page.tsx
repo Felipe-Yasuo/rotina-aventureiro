@@ -1,18 +1,32 @@
-import { Button } from "@/components/ui/Button";
-
 export default function HomePage() {
     return (
-        <main className="min-h-screen flex flex-col items-center justify-center text-center px-6 bg-gradient-to-b from-gray-900 via-gray-950 to-black">
-            <h1 className="text-5xl md:text-6xl font-extrabold text-green-400 drop-shadow-lg mb-4">
-                Rotina do Aventureiro
+        <div className="
+      min-h-screen flex flex-col items-center justify-center
+      text-center px-6
+      bg-[url('/textures/hero-bg.jpg')] bg-cover bg-center
+    ">
+            <h1 className="
+        text-6xl font-extrabold text-[#F6E6C4]
+        drop-shadow-[0_5px_5px_rgba(0,0,0,0.7)]
+      ">
+                🗡️ Rotina do Aventureiro
             </h1>
-            <p className="text-gray-300 text-lg md:text-xl max-w-2xl mb-8">
-                Transforme suas tarefas diárias em uma jornada épica.
-                Suba de nível, ganhe recompensas e conquiste seus objetivos!
+
+            <p className="text-xl text-[#F6E6C4]/70 max-w-2xl mt-4">
+                Entre em uma jornada épica onde suas tarefas diárias se tornam missões.
             </p>
 
-            <Button className="text-lg px-8 py-4">Comece Agora</Button>
-        </main>
+            <a
+                href="/login"
+                className="
+          mt-10 px-8 py-4 rounded-xl text-lg font-bold
+          bg-[#7A2E1C] hover:bg-[#A15C2F]
+          shadow-[0_0_20px_rgba(0,0,0,0.6)]
+          transition
+        "
+            >
+                Começar Aventura
+            </a>
+        </div>
     );
 }
-

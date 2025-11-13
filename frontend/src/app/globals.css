@@ -1,7 +1,15 @@
 @import "tailwindcss";
 
+:root {
+  color-scheme: dark;
+}
+
+html,
+body,
+#__next {
+  height: 100%;
+}
+
 body {
-  @apply bg-[#1C1A18] text-[#F6E6C4] font-sans;
-  background-image: url('/textures/dark-grain.png');
-  background-size: cover;
+  @apply bg-gray-950 text-gray-100 antialiased;
 }

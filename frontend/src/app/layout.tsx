@@ -1,17 +1,20 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { AuthProvider } from "@/context/AuthContext";
 
 export const metadata: Metadata = {
   title: "Rotina do Aventureiro",
-  description: "Transforme suas rotinas em uma jornada épica!",
+  description: "Transforme sua rotina em uma aventura épica de RPG.",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="pt-BR">
-      <body>
-        <AuthProvider>{children}</AuthProvider>
+      <body className="min-h-screen bg-slate-950 text-slate-100">
+        {children}
       </body>
     </html>
   );

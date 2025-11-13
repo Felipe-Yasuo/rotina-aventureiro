@@ -31,9 +31,9 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
         return res.status(err.statusCode).json({
             status: "error",
             message: err.message,
+            details: err.details,
         });
     }
-
     if ((err as any).issues) {
         return res.status(400).json({
             status: "error",

@@ -1,24 +1,27 @@
 "use client";
 
+import { ReactNode } from "react";
 import { useAuth } from "@/context/AuthContext";
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
 
-export default function DashboardLayout({ children }: { children: React.ReactNode }) {
-    const { isAuthenticated, loading } = useAuth();
-    const router = useRouter();
+export default function DashboardLayout({ children }: { children: ReactNode }) {
+    const { user, signOut } = useAuth();
 
-    useEffect(() => {
-        if (!loading && !isAuthenticated) {
-            router.replace("/login");
-        }
-    }, [loading, isAuthenticated, router]);
+    return (
+        <div className="min-h-screen bg-gray-950 text-gray-100 flex flex-col">
+            <header className="bg-gray-900 px-6 py-4 flex justify-between items-center border-b border-gray-800">
+                <h1 className="text-xl font-bold text-green-400">Rotina Aventureiro ⚔️</h1>
+                <div className="flex items-center gap-4">
+                    <span className="text-sm text-gray-400">{user?.name}</span>
+                    <button
+                        onClick={signOut}
+                        className="px-3 py-1 rounded bg-red-600 hover:bg-red-700 text-sm"
+                    >
+                        Sair
+                    </button>
+                </div>
+            </header>
 
-    if (loading) {
-        return <div className="p-6">Carregando...</div>;
-    }
-
-    if (!isAuthenticated) return null;
-
-    return <div className="min-h-screen">{children}</div>;
+            <main className="flex-1 px-6 py-8">{children}</main>
+        </div>
+    );
 }

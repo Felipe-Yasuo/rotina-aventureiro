@@ -3,10 +3,18 @@ import { prisma } from "../../prisma";
 export class ListInventoryService {
     async execute(userId: string) {
         const inventory = await prisma.userItem.findMany({
-            where: { userId },
+            where: {
+                userId,
+                item: { deletedAt: null },
+            },
             include: {
                 item: {
-                    select: { id: true, name: true, price: true, imageUrl: true },
+                    select: {
+                        id: true,
+                        name: true,
+                        price: true,
+                        imageUrl: true
+                    },
                 },
             },
         });

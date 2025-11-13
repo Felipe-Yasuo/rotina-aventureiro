@@ -13,6 +13,8 @@ import { ListItemsController } from "./controllers/item/ListItemsController";
 import { BuyItemController } from "./controllers/item/BuyItemController";
 import { ListInventoryController } from "./controllers/item/ListInventoryController";
 import { GetMeController } from "./controllers/user/GetMeController";
+import { DeleteRoutineController } from "./controllers/routine/DeleteRoutineController";
+import { DeleteUserController } from "./controllers/user/DeleteUserController";
 
 
 const router = Router();
@@ -30,7 +32,8 @@ const listItems = new ListItemsController();
 const buyItem = new BuyItemController();
 const listInventory = new ListInventoryController();
 const getMe = new GetMeController();
-
+const deleteRoutine = new DeleteRoutineController();
+const deleteUser = new DeleteUserController();
 
 // ======= AUTH =======
 router.post("/users", (req, res) => createUser.handle(req, res));
@@ -63,5 +66,13 @@ router.get("/inventory", isAuthenticated, (req, res) => listInventory.handle(req
 router.get("/ping", (req, res) => {
     return res.json({ message: "pong" });
 });
+
+// ======= DELETE =======
+router.delete("/routines/:id", isAuthenticated, (req, res) =>
+    deleteRoutine.handle(req, res)
+);
+router.delete("/users/me", isAuthenticated, (req, res) =>
+    deleteUser.handle(req, res)
+);
 
 export { router };

@@ -7,6 +7,7 @@ export class GetRoutineStatsService {
             where: {
                 userId,
                 completed: true,
+                deletedAt: null,
             },
             select: { difficulty: true },
         });

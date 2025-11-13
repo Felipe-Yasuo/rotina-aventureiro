@@ -24,6 +24,9 @@ export class GetRankingService {
         const users = await prisma.user.findMany({
             skip,
             take: limit,
+            where: {
+                deletedAt: null,
+            },
             orderBy: [
                 { [safeOrder]: "desc" },
                 { xp: "desc" },
@@ -37,7 +40,9 @@ export class GetRankingService {
             },
         });
 
-        const totalUsers = await prisma.user.count();
+        const totalUsers = await prisma.user.count({
+            where: { deletedAt: null },
+        });
 
         return {
             page,

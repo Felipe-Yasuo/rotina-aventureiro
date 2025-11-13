@@ -12,7 +12,10 @@ export class GetFriendsFeedService {
         const ids = friendships.map(f => f.followingId);
 
         const activities = await prisma.activity.findMany({
-            where: { userId: { in: ids } },
+            where: {
+                userId: { in: ids },
+                user: { deletedAt: null },
+            },
             orderBy: { createdAt: "desc" },
             skip,
             take: limit,

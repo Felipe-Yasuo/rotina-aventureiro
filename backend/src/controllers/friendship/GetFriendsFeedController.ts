@@ -1,11 +1,13 @@
 import { Request, Response } from "express";
 import { GetFriendsFeedService } from "../../services/friendship/GetFriendsFeedService";
+import { paginationSchema } from "../../validations/querySchemas";
 
 export class GetFriendsFeedController {
     async handle(req: Request, res: Response) {
         const userId = req.user.id;
-        const page = Number(req.query.page) || 1;
-        const limit = Number(req.query.limit) || 10;
+
+
+        const { page, limit } = paginationSchema.parse(req.query);
 
         const service = new GetFriendsFeedService();
         const feed = await service.execute(userId, page, limit);
@@ -13,4 +15,3 @@ export class GetFriendsFeedController {
         return res.json(feed);
     }
 }
-

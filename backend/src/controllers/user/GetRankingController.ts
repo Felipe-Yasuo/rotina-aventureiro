@@ -1,18 +1,18 @@
 import { Request, Response } from "express";
 import { GetRankingService } from "../../services/user/GetRankingService";
+import { rankingQuerySchema } from "../../validations/querySchemas";
 
 export class GetRankingController {
     async handle(req: Request, res: Response) {
-        const { page, limit, orderBy } = req.query;
+        const { page, limit, orderBy } = rankingQuerySchema.parse(req.query);
 
         const service = new GetRankingService();
         const ranking = await service.execute({
-            page: Number(page),
-            limit: Number(limit),
-            orderBy: orderBy as "level" | "xp" | "money",
+            page,
+            limit,
+            orderBy,
         });
 
         return res.json(ranking);
     }
 }
-

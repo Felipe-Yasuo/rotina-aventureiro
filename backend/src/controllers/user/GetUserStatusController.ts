@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { prisma } from "../../prisma";
+import { AppError } from "../../errors/AppError";
 
 export class GetUserStatusController {
     async handle(req: Request, res: Response) {
@@ -15,6 +16,8 @@ export class GetUserStatusController {
                 level: true,
             },
         });
+
+        if (!user) throw new AppError("Usuário não encontrado.", 404);
 
         return res.json(user);
     }

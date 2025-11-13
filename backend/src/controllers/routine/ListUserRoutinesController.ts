@@ -7,6 +7,7 @@ export class ListUserRoutinesController {
         const routines = await prisma.routine.findMany({
             where: { userId },
             orderBy: { createdAt: "desc" },
+            include: { attributes: true },
         });
 
         return res.json(routines);

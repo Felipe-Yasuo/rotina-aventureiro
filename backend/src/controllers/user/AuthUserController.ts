@@ -3,19 +3,26 @@ import { prisma } from "../../prisma";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { AppError } from "../../errors/AppError";
+import { loginSchema } from "../../validations/userSchemas";
 
 export class AuthUserController {
     async handle(req: Request, res: Response) {
-        const { email, password } = req.body;
+        const { email, password } = loginSchema.parse(req.body);
 
         const user = await prisma.user.findUnique({ where: { email } });
-        if (!user) throw new AppError("Usuário não encontrado.", 404);
+
+        if (!user) {
+            throw new AppError("Usuário não encontrado.", 404);
+        }
 
         const match = await bcrypt.compare(password, user.password);
-        if (!match) throw new AppError("Preencha email e senha.", 400);
+
+        if (!match) {
+            throw new AppError("Senha incorreta.", 401);
+        }
 
         const token = jwt.sign(
-            { userId: user.id },
+            { id: user.id },
             process.env.JWT_SECRET as string,
             { expiresIn: "7d" }
         );
@@ -29,8 +36,15 @@ export class AuthUserController {
                 xp: user.xp,
                 money: user.money,
                 level: user.level,
+                streak: user.streak,
+                lives: user.lives,
+                strength: user.strength,
+                intelligence: user.intelligence,
+                charisma: user.charisma,
+                creativity: user.creativity,
+                health: user.health,
+                createdAt: user.createdAt,
             },
         });
     }
 }
-

@@ -1,4 +1,5 @@
 import { prisma } from "../../prisma";
+import { AppError } from "../../errors/AppError";
 
 interface RankingRequest {
     page?: number;
@@ -8,13 +9,23 @@ interface RankingRequest {
 
 export class GetRankingService {
     async execute({ page = 1, limit = 10, orderBy = "level" }: RankingRequest) {
+
+
+        const allowedOrderFields = ["level", "xp", "money"] as const;
+
+        if (!allowedOrderFields.includes(orderBy)) {
+            throw new AppError("Parâmetro orderBy inválido.", 400);
+        }
+
         const skip = (page - 1) * limit;
+
+        const safeOrder = orderBy as "level" | "xp" | "money";
 
         const users = await prisma.user.findMany({
             skip,
             take: limit,
             orderBy: [
-                { [orderBy]: "desc" },
+                { [safeOrder]: "desc" },
                 { xp: "desc" },
             ],
             select: {
@@ -37,4 +48,3 @@ export class GetRankingService {
         };
     }
 }
-

@@ -1,5 +1,6 @@
 import { prisma } from "../../prisma";
 import { UpdateDailyStreakService } from "../user/UpdateDailyStreakService";
+import { AppError } from "../../errors/AppError";
 
 interface CompleteRequest {
     routineId: string;
@@ -16,8 +17,8 @@ export class CompleteRoutineService {
             }
         });
 
-        if (!routine) throw new Error("Rotina não encontrada.");
-        if (routine.completed) throw new Error("Rotina já concluída.");
+        if (!routine) throw new AppError("Rotina não encontrada.", 404);
+        if (routine.completed) throw new AppError("Rotina já concluída.", 409);
 
 
         await prisma.routine.update({
@@ -26,7 +27,7 @@ export class CompleteRoutineService {
         });
 
         const user = await prisma.user.findUnique({ where: { id: userId } });
-        if (!user) throw new Error("Usuário não encontrado.");
+        if (!user) throw new AppError("Usuário não encontrado.", 404);
 
 
         let newXp = user.xp + routine.xpReward;

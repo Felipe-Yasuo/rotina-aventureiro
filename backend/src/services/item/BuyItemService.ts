@@ -1,4 +1,5 @@
 import { prisma } from "../../prisma";
+import { AppError } from "../../errors/AppError";
 
 interface BuyItemRequest {
     userId: string;
@@ -8,13 +9,13 @@ interface BuyItemRequest {
 export class BuyItemService {
     async execute({ userId, itemId }: BuyItemRequest) {
         const user = await prisma.user.findUnique({ where: { id: userId } });
-        if (!user) throw new Error("Usuário não encontrado.");
+        if (!user) throw new AppError("Usuário não encontrado.", 404);
 
         const item = await prisma.item.findUnique({ where: { id: itemId } });
-        if (!item) throw new Error("Item não encontrado.");
+        if (!item) throw new AppError("Item não encontrado.", 404);
 
         if (user.money < item.price) {
-            throw new Error("Dinheiro insuficiente para comprar este item.");
+            throw new AppError("Dinheiro insuficiente.", 400);
         }
 
 
@@ -23,7 +24,7 @@ export class BuyItemService {
         });
 
         if (alreadyHas) {
-            throw new Error("Você já possui este item.");
+            throw new AppError("Você já possui este item.", 409);
         }
 
 

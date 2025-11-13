@@ -1,3 +1,4 @@
+import { AppError } from "../../errors/AppError";
 import { prisma } from "../../prisma";
 
 interface FollowRequest {
@@ -7,13 +8,13 @@ interface FollowRequest {
 
 export class FollowUserService {
     async execute({ followerId, followingId }: FollowRequest) {
-        if (followerId === followingId) throw new Error("Você não pode seguir a si mesmo.");
+        if (followerId === followingId) throw new AppError("Você não pode seguir a si mesmo.", 400);
 
         const already = await prisma.friendship.findFirst({
             where: { followerId, followingId },
         });
 
-        if (already) throw new Error("Você já segue esse usuário.");
+        if (already) throw new AppError("Você já segue esse usuário.", 409);
 
         const follow = await prisma.friendship.create({
             data: { followerId, followingId },

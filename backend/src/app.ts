@@ -1,6 +1,7 @@
 import express, { Request, Response, NextFunction } from "express";
 import cors from "cors";
 import { router } from "./routes";
+import { AppError } from "./errors/AppError";
 
 const app = express();
 
@@ -12,26 +13,35 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 
     res.on("finish", () => {
         const duration = Date.now() - start;
-        console.log(`${req.method} ${req.originalUrl} - ${res.statusCode} (${duration}ms)`);
+        console.log(
+            `${req.method} ${req.originalUrl} - ${res.statusCode} (${duration}ms)`
+        );
     });
-
     next();
 });
+
 
 app.use(router);
 
 
-app.use((err: any, req: Request, res: Response, next: NextFunction) => {
-    console.error("🔥 Erro capturado:", err);
 
-    if (err instanceof Error) {
-        return res.status(400).json({ status: "error", message: err.message });
+app.use(
+    (err: Error, req: Request, res: Response, next: NextFunction) => {
+        console.error("🔥 Erro capturado:", err);
+
+
+        if (err instanceof AppError) {
+            return res.status(err.statusCode).json({
+                status: "error",
+                message: err.message,
+            });
+        }
+
+        return res.status(500).json({
+            status: "error",
+            message: "Internal Server Error",
+        });
     }
-
-    return res.status(500).json({
-        status: "error",
-        message: "Internal Server Error",
-    });
-});
+);
 
 export { app };

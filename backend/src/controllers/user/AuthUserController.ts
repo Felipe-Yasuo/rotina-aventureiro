@@ -2,16 +2,17 @@ import { Request, Response } from "express";
 import { prisma } from "../../prisma";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { AppError } from "../../errors/AppError";
 
 export class AuthUserController {
     async handle(req: Request, res: Response) {
         const { email, password } = req.body;
 
         const user = await prisma.user.findUnique({ where: { email } });
-        if (!user) throw new Error("Usuário não encontrado.");
+        if (!user) throw new AppError("Usuário não encontrado.", 404);
 
         const match = await bcrypt.compare(password, user.password);
-        if (!match) throw new Error("Senha incorreta.");
+        if (!match) throw new AppError("Preencha email e senha.", 400);
 
         const token = jwt.sign(
             { userId: user.id },

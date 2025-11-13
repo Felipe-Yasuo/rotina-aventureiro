@@ -1,8 +1,10 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
+import { useRouter } from "next/navigation";
 import { signInRequest, registerUser } from "@/services/auth";
 import type { User } from "@/types/auth";
+
 
 type AuthContextData = {
     user: User | null;
@@ -17,6 +19,7 @@ type AuthContextData = {
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
+    const router = useRouter();
     const [user, setUser] = useState<User | null>(null);
     const [token, setToken] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
@@ -34,10 +37,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     async function signIn(email: string, password: string) {
         const { token, user } = await signInRequest({ email, password });
+
         localStorage.setItem("token", token);
         localStorage.setItem("user", JSON.stringify(user));
+
         setToken(token);
         setUser(user);
+
+
+        router.push("/dashboard");
     }
 
     function signOut() {
@@ -50,8 +58,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     async function signUp(name: string, email: string, password: string) {
         const newUser = await registerUser({ name, email, password });
-        // após registrar, já faz login automático
         await signIn(email, password);
+        router.push("/dashboard");
     }
 
     return (

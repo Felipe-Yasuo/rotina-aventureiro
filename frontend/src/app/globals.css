@@ -13,3 +13,23 @@ body,
 body {
   @apply bg-gray-950 text-gray-100 antialiased;
 }
+
+@import "tailwindcss";
+
+@theme {
+  --color-frierenBlue: #A6C8F5;
+  --color-skyMist: #DCE9F9;
+  --color-cloudWhite: #F5F8FC;
+  --color-lilacWhisper: #C8BBE6;
+  --color-roseSoft: #F3DDE1;
+  --color-deepTwilight: #2F3C56;
+  --color-fogGray: #DDE3EB;
+  --color-forestPale: #CFEAD9;
+
+  --background-image-hero-bg: url('/textures/hero-bg.png');
+  --background-image-fog: url('/textures/fog-texture.png');
+  --background-image-paper: url('/textures/soft-paper.png');
+
+  --font-title: var(--font-title);
+  --font-text: var(--font-text);
+}

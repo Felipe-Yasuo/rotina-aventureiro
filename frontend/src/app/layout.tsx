@@ -1,6 +1,19 @@
 import type { Metadata } from "next";
 import { AuthProvider } from "@/context/AuthContext";
 import "./globals.css";
+import { Cormorant_Garamond, Inter } from "next/font/google";
+
+const titleFont = Cormorant_Garamond({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  variable: "--font-title",
+});
+
+const textFont = Inter({
+  subsets: ["latin"],
+  weight: ["300", "400", "500"],
+  variable: "--font-text",
+});
 
 export const metadata: Metadata = {
   title: "Rotina do Aventureiro",
@@ -14,7 +27,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-BR">
-      <body className="min-h-screen bg-slate-950 text-slate-100">
+      <body className={`${titleFont.variable} ${textFont.variable} font-text bg-cloudWhite text-deepTwilight`}>
         <AuthProvider>
           {children}
         </AuthProvider>

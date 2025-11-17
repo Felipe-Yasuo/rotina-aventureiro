@@ -2,9 +2,11 @@
 
 import Link from "next/link";
 import { useLogin } from "@/modules/auth/hooks/useLogin";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
     const { form, handleLogin, loading, serverError } = useLogin();
+    const router = useRouter();
 
     return (
         <div className="min-h-screen bg-hero-bg bg-cover bg-center flex items-center justify-center px-4 relative">
@@ -12,11 +14,18 @@ export default function LoginPage() {
             <div className="absolute inset-0 bg-gradient-to-b from-[#4a6675]/50 to-[#e8f0f5]/30 backdrop-blur-[2px]" />
 
             <div className="relative z-10 w-full max-w-md bg-white/60 border border-white/40 rounded-2xl p-8 shadow-lg backdrop-blur-xl">
+
                 <h1 className="text-3xl font-title text-deepTwilight text-center mb-6">
-                    Bem-vindo de volta 🌸
+                    Bem-vindo
                 </h1>
 
-                <form onSubmit={form.handleSubmit(handleLogin)} className="space-y-4">
+                <form
+                    onSubmit={form.handleSubmit(async (data) => {
+                        const ok = await handleLogin(data);
+                        if (ok) router.push("/dashboard");
+                    })}
+                    className="space-y-4"
+                >
 
                     <div>
                         <label className="text-deepTwilight text-sm font-text">E-mail</label>

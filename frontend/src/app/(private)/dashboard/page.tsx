@@ -1,32 +1,17 @@
 "use client";
 
-import { useAuth } from "@/hooks/useAuth";
-import { Heading } from "@/components/ui/heading";
-import { CardHero } from "@/components/ui/card-hero";
+import { UserCard } from "@/components/dashboard/UserCard";
 
 export default function DashboardPage() {
-    const { user } = useAuth();
-
     return (
-        <div className="min-h-screen flex items-center justify-center bg-hero-bg bg-cover relative px-6">
+        <div className="space-y-6">
+            <h1 className="font-title text-4xl text-center">Seu Dashboard 🌱</h1>
 
-            <div className="absolute inset-0 bg-gradient-to-b from-[#4a6675]/50 to-[#e8f0f5]/30 backdrop-blur-[2px]" />
+            <UserCard />
 
-            <div className="relative z-10 w-full max-w-2xl">
-                <CardHero className="text-center space-y-4">
-
-                    <Heading size="md">🌟 Bem-vindo, {user?.name}</Heading>
-
-                    <p className="font-text text-deepTwilight/80">
-                        Seu nível atual: <strong>{user?.level}</strong>
-                    </p>
-
-                    <p className="font-text text-deepTwilight/80">
-                        XP: {user?.xp} — Dinheiro: {user?.money}💰
-                    </p>
-                </CardHero>
-            </div>
-
+            <p className="text-center font-text text-deepTwilight/70">
+                Em breve: rotinas, loja, conquistas, mapa...
+            </p>
         </div>
     );
 }

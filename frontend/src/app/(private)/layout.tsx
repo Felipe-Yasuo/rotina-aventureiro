@@ -1,6 +1,7 @@
 "use client";
 
 import { ReactNode } from "react";
+import { Header } from "@/components/dashboard/Header";
 import { useProtectedRoute } from "@/hooks/useProtectedRoute";
 
 export default function PrivateLayout({ children }: { children: ReactNode }) {
@@ -14,5 +15,12 @@ export default function PrivateLayout({ children }: { children: ReactNode }) {
         );
     }
 
-    return <>{children}</>;
+    return (
+        <div className="min-h-screen bg-cloudWhite text-deepTwilight">
+            <Header />
+            <main className="max-w-6xl mx-auto px-6 py-10">
+                {children}
+            </main>
+        </div>
+    );
 }

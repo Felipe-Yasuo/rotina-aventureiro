@@ -15,9 +15,13 @@ import { ListInventoryController } from "./controllers/item/ListInventoryControl
 import { GetMeController } from "./controllers/user/GetMeController";
 import { DeleteRoutineController } from "./controllers/routine/DeleteRoutineController";
 import { DeleteUserController } from "./controllers/user/DeleteUserController";
-
+import multer from "multer";
+import { multerConfig } from "./config/multer";
 
 const router = Router();
+
+
+
 
 const getRanking = new GetRankingController();
 const createUser = new CreateUserController();
@@ -35,11 +39,29 @@ const getMe = new GetMeController();
 const deleteRoutine = new DeleteRoutineController();
 const deleteUser = new DeleteUserController();
 
+
+
+
+
+
 // ======= AUTH =======
 router.post("/users", (req, res) => createUser.handle(req, res));
 router.post("/session", (req, res) => authUser.handle(req, res));
 router.get("/me", isAuthenticated, (req, res) => getMe.handle(req, res));
 
+
+// ======= UPLOAD =======
+const upload = multer(multerConfig);
+
+router.post("/upload", isAuthenticated, upload.single("file"), (req, res) => {
+    if (!req.file) {
+        return res.status(400).json({ message: "Arquivo não enviado." });
+    }
+
+    return res.json({
+        url: `http://localhost:3333/uploads/${req.file.filename}`
+    });
+});
 
 // ======= ROUTINES =======
 router.post("/routines", isAuthenticated, (req, res) => createRoutine.handle(req, res));

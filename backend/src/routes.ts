@@ -53,15 +53,21 @@ router.get("/me", isAuthenticated, (req, res) => getMe.handle(req, res));
 // ======= UPLOAD =======
 const upload = multer(multerConfig);
 
-router.post("/upload", isAuthenticated, upload.single("file"), (req, res) => {
-    if (!req.file) {
-        return res.status(400).json({ message: "Arquivo não enviado." });
-    }
+router.post(
+    "/upload",
+    isAuthenticated,
+    upload.single("file"),
+    (req, res) => {
 
-    return res.json({
-        url: `http://localhost:3333/uploads/${req.file.filename}`
-    });
-});
+        if (!req.file) {
+            return res.status(400).json({ message: "Nenhum arquivo enviado." });
+        }
+
+        return res.json({
+            url: `http://localhost:3333/uploads/${req.file.filename}`
+        });
+    }
+);
 
 // ======= ROUTINES =======
 router.post("/routines", isAuthenticated, (req, res) => createRoutine.handle(req, res));

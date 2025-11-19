@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { AuthProvider } from "@/context/AuthContext";
 import "./globals.css";
 import { Cormorant_Garamond, Inter } from "next/font/google";
+import { Toaster } from "react-hot-toast";
 
 const titleFont = Cormorant_Garamond({
   subsets: ["latin"],
@@ -30,6 +31,7 @@ export default function RootLayout({
       <body className={`${titleFont.variable} ${textFont.variable} font-text bg-cloudWhite text-deepTwilight`}>
         <AuthProvider>
           {children}
+          <Toaster position="top-center" />
         </AuthProvider>
       </body>
     </html >

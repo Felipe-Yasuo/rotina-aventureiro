@@ -15,12 +15,11 @@ import { ListInventoryController } from "./controllers/item/ListInventoryControl
 import { GetMeController } from "./controllers/user/GetMeController";
 import { DeleteRoutineController } from "./controllers/routine/DeleteRoutineController";
 import { DeleteUserController } from "./controllers/user/DeleteUserController";
-import multer from "multer";
-import { multerConfig } from "./config/multer";
+import upload from "./config/multer";
+import { UploadImageController } from "./controllers/upload/UploadImageController";
+
 
 const router = Router();
-
-
 
 
 const getRanking = new GetRankingController();
@@ -51,21 +50,17 @@ router.get("/me", isAuthenticated, (req, res) => getMe.handle(req, res));
 
 
 // ======= UPLOAD =======
-const upload = multer(multerConfig);
+
+const uploadImage = new UploadImageController();
 
 router.post(
     "/upload",
     isAuthenticated,
     upload.single("file"),
     (req, res) => {
-
-        if (!req.file) {
-            return res.status(400).json({ message: "Nenhum arquivo enviado." });
-        }
-
-        return res.json({
-            url: `http://localhost:3333/uploads/${req.file.filename}`
-        });
+        console.log("📸 FILE RECEBIDO:", req.file);
+        console.log("📦 BODY RECEBIDO:", req.body);
+        return uploadImage.handle(req, res);
     }
 );
 

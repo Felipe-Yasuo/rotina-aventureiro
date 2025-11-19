@@ -3,8 +3,7 @@ import cors from "cors";
 import morgan from "morgan";
 import { router } from "./routes";
 import { AppError } from "./errors/AppError";
-import { uploadFolderPath } from "./config/multer";
-
+import path from "path";
 
 const app = express();
 
@@ -22,7 +21,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
     next();
 });
 
-app.use("/uploads", express.static(uploadFolderPath));
+app.use("/uploads", express.static(path.resolve(__dirname, "..", "uploads")));
 
 app.use(router);
 
